@@ -3,32 +3,60 @@ import { Injectable } from '@nestjs/common';
 import OpenAI from "openai";
 import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
+import "dotenv/config"; // Load environment variables
+import { start } from 'repl';
 
-// TODO: Hardocde for simplicity during prototype, should replace with environment variable process.env.OPENAI_API_KEY
-const apiKey = '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'; // Replace with your actual token
+// TODO: Remove the below code, log the OPENAI_API_KEY environment variable during prototype for easier debugging
+console.log("ChatService", process.env.OPENAI_API_KEY);
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const Step = z.object({
-  explanation: z.string(),
-  output: z.string(),
+const Agenda = z.object({
+  startTime: z.string(),
+  endTime: z.string(),
+  agendaSubject: z.string(),
+  agendaDetails: z.string(),
+  myPreparation: z.string(),
+  source: z.string(),
+  isHighPriority: z.boolean(),
 });
 
-const MathReasoning = z.object({
-  steps: z.array(Step),
-  final_answer: z.string(),
+const TODO = z.object({
+  shortSummary: z.string(),
+  source: z.string(),
+  isHighPriority: z.boolean(),
 });
 
+const summaryOfTheDay = z.object({
+  summaryOftheDay: z.string(),
+  agenda: z.array(Agenda),
+  todos: z.array(TODO),
+});
 
 @Injectable()
 export class ChatService {
-  async getHello(): Promise<string> {
-    const openai = new OpenAI({ apiKey });
+  async test(retrivalData: string): Promise<string> {
     const completion = await openai.beta.chat.completions.parse({
-      model: "gpt-4o-2024-08-06",
+      model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a helpful math tutor. Guide the user through the solution step by step." },
-        { role: "user", content: "how can I solve 8x + 7 = -23" },
+        { role: "system", content: "You are an expert at arrange agenda and structured data extraction. The following are retravial data from a calenda, gmail, docs etc...:" + retrivalData },
+        { role: "user", content: "prepare my day" },
       ],
-      response_format: zodResponseFormat(MathReasoning, "math_reasoning"),
+      response_format: zodResponseFormat(summaryOfTheDay, "summaryOfTheDay"),
+    });
+
+    const math_reasoning = completion.choices[0].message.parsed;
+
+    return JSON.stringify(math_reasoning, null, 2);
+  }
+
+  async prepareMyDay(retrivalData: string): Promise<string> {
+    const completion = await openai.beta.chat.completions.parse({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are an expert at arrange agenda and structured data extraction. The following are retravial data from a calenda, gmail, docs etc...:" + retrivalData },
+        { role: "user", content: "prepare my day" },
+      ],
+      response_format: zodResponseFormat(summaryOfTheDay, "summaryOfTheDay"),
     });
 
     const math_reasoning = completion.choices[0].message.parsed;
