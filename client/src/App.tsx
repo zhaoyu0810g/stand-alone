@@ -1,41 +1,8 @@
-import './App.css'
-import { Breadcrumb, BreadcrumbButton, BreadcrumbDivider, BreadcrumbItem } from '@fluentui/react-components'
-import {
-  CalendarMonthFilled,
-  CalendarMonthRegular,
-  bundleIcon,
-} from "@fluentui/react-icons";
+import { Shell } from './shell/Shell';
 
-const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
-const path = "https://www.bing.com/";
-
-function App() {
-
+export const App = () => {
   return (
-    <>
-    <Breadcrumb aria-label="Breadcrumb default example">
-      <BreadcrumbItem>
-        <BreadcrumbButton href={path}>Item 1</BreadcrumbButton>
-      </BreadcrumbItem>
-      <BreadcrumbDivider />
-      <BreadcrumbItem>
-        <BreadcrumbButton href={path} icon={<CalendarMonth />}>
-          Item 2
-        </BreadcrumbButton>
-      </BreadcrumbItem>
-      <BreadcrumbDivider />
-      <BreadcrumbItem>
-        <BreadcrumbButton href={path}>Item 3</BreadcrumbButton>
-      </BreadcrumbItem>
-      <BreadcrumbDivider />
-      <BreadcrumbItem>
-        <BreadcrumbButton href={path} current>
-          Item 4
-        </BreadcrumbButton>
-      </BreadcrumbItem>
-    </Breadcrumb>
-    </>
-  )
+    <Shell>
+      <div>App</div></Shell>
+  );
 }
-
-export default App
