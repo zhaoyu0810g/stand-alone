@@ -37,8 +37,7 @@ export const Chat: React.FC = () => {
         const userMessage: Message = { role: 'user', content: message };
         const newMessages = [...messages, userMessage];
 
-        const assistantMessage: Message = { role: 'assistant', content: '...' };
-        dispatch(updateMessages([...newMessages, assistantMessage]));
+        dispatch(updateMessages(newMessages));
         setMessage('');
         setLoading(true);
 

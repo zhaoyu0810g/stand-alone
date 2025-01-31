@@ -6,10 +6,13 @@ export const messagesSlice = createSlice({
     messages: [],
   },
   reducers: {
-    updateMessages: (state,action) => {
+    updateMessages: (state, action) => {
       state.messages = action.payload;
     },
+    clearMessages: (state) => {
+      state.messages = [];
+    }
   },
-})
+});
 
-export const { updateMessages } = messagesSlice.actions
+export const { updateMessages, clearMessages } = messagesSlice.actions

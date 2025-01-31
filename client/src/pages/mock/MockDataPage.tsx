@@ -3,10 +3,13 @@ import React, { ReactNode, memo, useCallback, useEffect, useState } from 'react'
 import { ragMockService } from '../../service/ragMockService';
 import { MockConnector } from './MockConnector';
 import styles from "./MockDataPage.module.scss";
+import { useDispatch } from 'react-redux';
+import { clearMessages } from '../../redux/messagesSlice';
 
 export const MockDataPage: React.FC = memo((): ReactNode => {
     const [jsonData, setJsonData] = useState<string>("...");
     const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const executeAsync = useCallback(async (asyncFn: () => Promise<unknown>) => {
         try {
@@ -30,16 +33,18 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
     const handleSave = useCallback(() => {
         executeAsync(async () => {
             const result = await ragMockService.update(jsonData);
+            dispatch(clearMessages());
             return result.data;
         });
-    }, [jsonData, executeAsync]);
+    }, [executeAsync, jsonData, dispatch]);
 
     const handleRegenerate = useCallback(() => {
         executeAsync(async () => {
             const result = await ragMockService.gen();
+            dispatch(clearMessages());
             return result.data;
         });
-    }, [executeAsync]);
+    }, [dispatch, executeAsync]);
 
 
     const onChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
