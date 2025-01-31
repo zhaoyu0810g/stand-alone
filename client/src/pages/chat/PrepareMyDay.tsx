@@ -42,7 +42,9 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
                 <Text>{data.summaryOftheDay}</Text>
             </div>
             <div className={styles.section}>
-                <Text weight='semibold'>
+                <>
+                
+                <Text weight='bold'>
                     Agenda
                 </Text>
                 <List>
@@ -67,9 +69,9 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
                         </ListItem>
                     ))}
                 </List>
-            </div>
-            <div className={styles.section}>
-                <Text weight='semibold'>
+                </>
+                <>
+                <Text weight='bold'>
                     To-Do List
                 </Text>
                 <List>
@@ -85,7 +87,11 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
                         </ListItem>
                     ))}
                 </List>
+                </>
             </div>
+            {/* <div className={styles.section}>
+
+            </div> */}
         </div>
     );
 });

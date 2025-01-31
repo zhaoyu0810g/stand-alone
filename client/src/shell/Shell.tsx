@@ -5,7 +5,6 @@ import { Route, Routes } from 'react-router-dom';
 import { ChatPage } from '../pages/chat/ChatPage';
 import { MockDataPage } from '../pages/mock/MockDataPage';
 import { ConnectorPage } from '../pages/connector/ConnectorPage';
-
 import styles from "./Shell.module.scss";
 
 export const Shell: React.FC = memo((): ReactNode => {

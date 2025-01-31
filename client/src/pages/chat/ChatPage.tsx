@@ -7,8 +7,8 @@ import styles from "./ChatPage.module.scss";
 export const ChatPage: React.FC = memo((): ReactNode => {
     return (
         <div className={styles.chatpageContainer}>
-            <PrepareMyDay />
             <Chat />
+            <PrepareMyDay />
         </div>
     )
 })

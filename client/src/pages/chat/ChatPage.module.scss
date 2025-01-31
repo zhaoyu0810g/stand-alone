@@ -1,5 +1,5 @@
 .chatpageContainer {
     display: flex;
-    flex-direction: row;
-    height: 100vh;
+    flex-direction: row-reverse;
+    flex-grow: 1;
 }

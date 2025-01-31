@@ -1,7 +1,8 @@
 .chatContainer {
     display: flex;
     flex-direction: column;
-    min-width: 200px;
+    width: 200px;
+    min-width: 180px;
     background: #f3f3f3;
     overflow: auto;
     padding: 10px;
