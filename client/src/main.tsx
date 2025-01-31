@@ -5,11 +5,15 @@ import "react-resizable/css/styles.css";
 
 import './index.css'
 import { App } from './App.tsx'
+import { Provider } from 'react-redux';
+import { store } from './store.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <FluentProvider theme={webLightTheme}>
-      <App />
-    </FluentProvider>
+    <Provider store={store}>
+      <FluentProvider theme={webLightTheme}>
+        <App />
+      </FluentProvider>
+    </Provider>
   </StrictMode>,
 )

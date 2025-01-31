@@ -1,11 +1,11 @@
-import { useState, useCallback, ReactNode } from 'react';
+import React, { useState, useCallback, ReactNode, memo } from 'react';
 import { Resizable } from 'react-resizable';
-import "react-resizable/css/styles.css";
-import LeftNav from './LeftNav';
-import { Chat } from '../chat/Chat';
+import { LeftNav } from './LeftNav';
+import { Chat } from '../pages/chat/Chat';
+import { TopBar } from './TopBar';
 import styles from "./Shell.module.scss";
 
-export const Shell = ({ children }: {
+export const Shell: React.FC<{children: ReactNode}> = memo(({ children }: {
     children: ReactNode;
 }): ReactNode => {
     const [leftWidth, setLeftWidth] = useState<number>(200);
@@ -29,14 +29,8 @@ export const Shell = ({ children }: {
 
     return (
         <div className={styles.container}>
-            {/* Top Bar */}
-            <div className={styles.banner}>
-                <div className={styles.logo}>Logo</div>
-            </div>
-
-            {/* Main Content */}
+            <TopBar />
             <div className={styles.content}>
-                {/* Left Resizable Panel */}
                 <Resizable
                     width={leftWidth}
                     height={0}
@@ -44,13 +38,9 @@ export const Shell = ({ children }: {
                 >
                     <LeftNav />
                 </Resizable>
-
-                {/* Middle Panel */}
                 <div className={styles.middlePanel}>
                     {children}
                 </div>
-
-                {/* Right Resizable Panel */}
                 <Resizable
                     width={rightWidth}
                     height={0}
@@ -63,4 +53,6 @@ export const Shell = ({ children }: {
             </div>
         </div>
     )
-}
+})
+
+Shell.displayName = "Shell";

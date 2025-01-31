@@ -1,0 +1,12 @@
+import React, { memo } from 'react';
+import styles from "./TopBar.module.scss";
+
+export const TopBar: React.FC = memo(() => {
+    return (
+        <div className={styles.topbar}>
+        <div style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>Stand Alone</div>
+    </div>
+    );
+});
+
+TopBar.displayName = "TopBar";
