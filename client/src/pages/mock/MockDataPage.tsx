@@ -2,6 +2,7 @@ import { Button, Card } from '@fluentui/react-components';
 import React, { ReactNode, memo, useCallback, useEffect, useState } from 'react';
 import { ragMockService } from '../../service/ragMockService';
 import { MockConnector } from './MockConnector';
+import styles from "./MockDataPage.module.scss";
 
 export const MockDataPage: React.FC = memo((): ReactNode => {
     const [jsonData, setJsonData] = useState<string>("...");
@@ -46,7 +47,7 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
     }, []);
 
     return (
-        <>
+        <div className={styles.mockPage}>
             <Card style={{ width: "100%", height: "100%" }}>
                 <h2>
                     Adjust RAG Retrieval Results for Testing
@@ -68,7 +69,7 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
                 />
             </Card>
             <MockConnector />
-        </>
+        </div>
     );
 });
 
