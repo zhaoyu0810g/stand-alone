@@ -1,25 +1,26 @@
 import React, { ReactNode, memo } from 'react';
 import { LeftNav } from './LeftNav';
-import { Chat } from '../pages/chat/Chat';
 import { TopBar } from './TopBar';
-import styles from "./Shell.module.scss";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ChatPage } from '../pages/chat/ChatPage';
 import { MockPage } from '../pages/mock/MockPage';
+import { ConnectorPage } from '../pages/connector/ConnectorPage';
 
-export const Shell: React.FC<{ children: ReactNode }> = memo(({ children }: {
-    children: ReactNode;
-}): ReactNode => {
+import styles from "./Shell.module.scss";
+
+export const Shell: React.FC = memo((): ReactNode => {
     return (
         <div className={styles.container}>
             <TopBar />
             <div className={styles.content}>
                 <LeftNav />
-                <Routes>
-                    <Route path="/" element={<ChatPage />} />
-                    <Route path="/dashboard" element={<MockPage />}>
-                    </Route>
-                </Routes>
+                <div>
+                    <Routes>
+                        <Route path="/" element={<ChatPage />} />
+                        <Route path="/dashboard" element={<MockPage />} />
+                        <Route path="/connector" element={<ConnectorPage />} />
+                    </Routes>
+                </div>
             </div>
         </div>
     )

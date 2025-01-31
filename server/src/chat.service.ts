@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import OpenAI from "openai";
-import { z } from "zod";
-import { zodResponseFormat } from "openai/helpers/zod";
-import "dotenv/config"; // Load environment variables
-import { start } from 'repl';
+import OpenAI from 'openai';
+import { z } from 'zod';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { ChatResponse } from './types';
+import 'dotenv/config'; // Load environment variables
+import { ChatCompletionMessageParam } from 'openai/resources';
 
 // TODO: Remove the below code, log the OPENAI_API_KEY environment variable during prototype for easier debugging
-console.log("ChatService", process.env.OPENAI_API_KEY);
+console.log('ChatService', process.env.OPENAI_API_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const Agenda = z.object({
@@ -26,41 +27,54 @@ const TODO = z.object({
   isHighPriority: z.boolean(),
 });
 
-const summaryOfTheDay = z.object({
+const response = z.object({
   summaryOftheDay: z.string(),
   agenda: z.array(Agenda),
   todos: z.array(TODO),
+  reply: z.string(),
 });
+
+const createSystemMessage = (
+  retrivalData: string,
+): ChatCompletionMessageParam => {
+  return {
+    role: 'system',
+    content:
+      'You are an expert at arrange agenda and structured data extraction.\r\n' +
+      'If user ask "prepare my day", return the structured data of the day, set `reply`, `summaryOftheDay`, `agenda` and `todos`.\r\n' +
+      'If user ask other questions instead of "prepare my day" or something similiar, only set `reply`, donnot set `summaryOftheDay`,  `agenda` or `todos`.\r\n' +
+      'The following are retravial data from a calenda, gmail, docs etc...:' +
+      retrivalData,
+  };
+};
 
 @Injectable()
 export class ChatService {
-  async test(retrivalData: string): Promise<string> {
+  async prepareMyDay(
+    retrivalData: string,
+    messages: ChatCompletionMessageParam[],
+  ): Promise<ChatCompletionMessageParam[]> {
+    const systemMessage = createSystemMessage(retrivalData);
+    messages.unshift(systemMessage);
     const completion = await openai.beta.chat.completions.parse({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: "You are an expert at arrange agenda and structured data extraction. The following are retravial data from a calenda, gmail, docs etc...:" + retrivalData },
-        { role: "user", content: "prepare my day" },
-      ],
-      response_format: zodResponseFormat(summaryOfTheDay, "summaryOfTheDay"),
+      model: 'gpt-4o',
+      messages,
+      response_format: zodResponseFormat(response, 'response'),
     });
 
-    const math_reasoning = completion.choices[0].message.parsed;
+    const parsed = completion.choices[0].message.parsed;
 
-    return JSON.stringify(math_reasoning, null, 2);
-  }
+    // TODO: remove as ChatResponse
+    const chatResponse = parsed as ChatResponse;
+    const responseMessages: ChatCompletionMessageParam[] = messages.filter(
+      (m) => m.role !== 'system',
+    );
 
-  async prepareMyDay(retrivalData: string): Promise<string> {
-    const completion = await openai.beta.chat.completions.parse({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: "You are an expert at arrange agenda and structured data extraction. The following are retravial data from a calenda, gmail, docs etc...:" + retrivalData },
-        { role: "user", content: "prepare my day" },
-      ],
-      response_format: zodResponseFormat(summaryOfTheDay, "summaryOfTheDay"),
+    responseMessages.push({
+      role: 'assistant',
+      content: JSON.stringify(chatResponse),
     });
 
-    const math_reasoning = completion.choices[0].message.parsed;
-
-    return JSON.stringify(math_reasoning, null, 2);
+    return responseMessages;
   }
 }

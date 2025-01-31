@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { increment } from '../../store';
+import React, { useCallback, useState } from 'react';
+import { chatService } from '../../service/chatService';
+import { Message } from '../../types';
+
+// const count = useSelector((state: any) => state.counter.value)
+// const dispatch = useDispatch()
+// dispatch(increment())
+
+const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
+    if (!message) return null;
+
+    let content = message.content;
+    if (message.role === 'assistant' && message.content[0] === "{") {
+        content = JSON.parse(message.content).reply;
+    }
+
+    return <div >
+        <p><strong>{message.role}</strong> {content}</p>
+    </div>
+};
 
 export const Chat: React.FC = () => {
     const [message, setMessage] = useState('');
-    const [chatHistory, setChatHistory] = useState<{ user: string, bot: string }[]>([]);
+    const [chatHistory, setChatHistory] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const count = useSelector((state: any) => state.counter.value)
-    const dispatch = useDispatch()
-
-    const chatGPTToken = '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'; // Replace with your actual token
 
     const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(event.target.value);
@@ -21,44 +33,17 @@ export const Chat: React.FC = () => {
         event.preventDefault();
         if (!message.trim()) return;
 
-        const newMessage = { user: message, bot: '' };
-        setChatHistory([...chatHistory, newMessage]);
+        const userMessage: Message = { role: 'user', content: message };
+        const newMessages = [...chatHistory, userMessage];
+
+        const assistantMessage: Message = { role: 'assistant', content: '...' };
+        setChatHistory([...newMessages, assistantMessage]);
         setMessage('');
         setLoading(true);
 
         try {
-            const response = await axios.post(
-                'https://api.openai.com/v1/chat/completions',
-                {
-                    model: 'gpt-4o',
-                    //   model: 'gpt-4',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: `You are a helpful assistant. All your responses should strictly follow the JSON format below:
-                            {
-                              "title": "Document Title",
-                              "summary": "A short summary of the document",
-                              "content": "The detailed content of the document"
-                            }
-                      
-                            Any response you give must be structured exactly as shown, and include only the required fields. Do not provide any other information or commentary.`
-                        },
-                        { role: 'user', content: message }
-                    ],
-                    max_tokens: 150,
-                    temperature: 0.7,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${chatGPTToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-
-            const botMessage = response.data.choices[0].message.content.trim(); // Adjusted to match response structure
-            setChatHistory((prev) => [...prev, { user: message, bot: botMessage }]);
+            const response = await chatService.post(newMessages);
+            setChatHistory(response.data);
         } catch (error) {
             console.error('Error fetching response from ChatGPT:', error);
         } finally {
@@ -66,20 +51,19 @@ export const Chat: React.FC = () => {
         }
     };
 
+    const testOnClick = useCallback(async () => {
+        const response = await chatService.post([{ role: 'user', content: 'prepare my day' }]);
+        console.log(response);
+    }, []);
+
     return (
         <div>
-            <button
-                aria-label="Increment value"
-                onClick={() => dispatch(increment())}
-            >
-                Increment {count}
+            <button onClick={testOnClick}>
+                Test
             </button>
             <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
-                {chatHistory.map((chat, index) => (
-                    <div key={index}>
-                        <p><strong>You:</strong> {chat.user}</p>
-                        <p><strong>ChatGPT:</strong> {chat.bot}</p>
-                    </div>
+                {chatHistory.map((message, index) => (
+                    <MessageDisplay message={message} key={index} />
                 ))}
                 {loading && <p>Loading...</p>}
             </div>
