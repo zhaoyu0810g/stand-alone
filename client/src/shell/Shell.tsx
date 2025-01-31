@@ -14,13 +14,11 @@ export const Shell: React.FC = memo((): ReactNode => {
             <TopBar />
             <div className={styles.content}>
                 <LeftNav />
-                <div>
-                    <Routes>
-                        <Route path="/" element={<MockDataPage />} />
-                        <Route path="/chat" element={<ChatPage />} />
-                        <Route path="/connector" element={<ConnectorPage />} />
-                    </Routes>
-                </div>
+                <Routes>
+                    <Route path="/" element={<MockDataPage />} />
+                    <Route path="/chat" element={<ChatPage />} />
+                    <Route path="/connector" element={<ConnectorPage />} />
+                </Routes>
             </div>
         </div>
     )
