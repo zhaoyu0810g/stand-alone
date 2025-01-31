@@ -23,7 +23,7 @@ export class ChatController {
   async test(): Promise<ChatCompletionMessageParam[]> {
     const retrivalData = this.mockService.getMockData();
     return await this.chatService.prepareMyDay(retrivalData, [
-      { role: 'user', content: 'how is the weather' },
+      { role: 'user', content: 'prepare my day' },
     ]);
   }
 }

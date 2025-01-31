@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { chatService } from '../../service/chatService';
 import { Message } from '../../types';
-
-// const count = useSelector((state: any) => state.counter.value)
-// const dispatch = useDispatch()
-// dispatch(increment())
+import { useDispatch, useSelector } from 'react-redux';
+import { StoreState } from '../../redux/store';
+import { updateMessages } from '../../redux/messagesSlice';
 
 const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
     if (!message) return null;
@@ -21,9 +20,10 @@ const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
 
 export const Chat: React.FC = () => {
     const [message, setMessage] = useState('');
-    const [chatHistory, setChatHistory] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
-
+    const dispatch = useDispatch();
+    const messages = useSelector((state: StoreState) => state.messages.messages);
+    
     const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(event.target.value);
     };
@@ -33,16 +33,16 @@ export const Chat: React.FC = () => {
         if (!message.trim()) return;
 
         const userMessage: Message = { role: 'user', content: message };
-        const newMessages = [...chatHistory, userMessage];
+        const newMessages = [...messages, userMessage];
 
         const assistantMessage: Message = { role: 'assistant', content: '...' };
-        setChatHistory([...newMessages, assistantMessage]);
+        dispatch(updateMessages([...newMessages, assistantMessage]));
         setMessage('');
         setLoading(true);
 
         try {
             const response = await chatService.post(newMessages);
-            setChatHistory(response.data);
+            dispatch(updateMessages(response.data));
         } catch (error) {
             console.error('Error fetching response from ChatGPT:', error);
         } finally {
@@ -53,7 +53,7 @@ export const Chat: React.FC = () => {
     return (
         <div>
             <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
-                {chatHistory.map((message, index) => (
+                {messages.map((message, index) => (
                     <MessageDisplay message={message} key={index} />
                 ))}
                 {loading && <p>Loading...</p>}

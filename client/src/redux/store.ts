@@ -1,11 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 import { messagesSlice } from './messagesSlice'
-import { Message } from '../types';
-
-export type StoreState = {
-  messages: Message[];
-}
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -36,3 +31,4 @@ export const store = configureStore({
   reducer: {counter: counterSlice.reducer, messages: messagesSlice.reducer},
 })
 
+export type StoreState = ReturnType<typeof store.getState>;
