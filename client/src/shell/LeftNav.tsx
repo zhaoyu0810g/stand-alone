@@ -20,9 +20,10 @@ const DataIcon = bundleIcon(BoxMultiple20Filled, BoxMultiple20Regular);
 // TODO: Change Icon
 
 export const LeftNav: React.FC = memo(() => {
+    const key = (window.location.hash || "").substring(2);
     return (
         <NavDrawer
-            defaultSelectedValue={window.location.pathname}
+            defaultSelectedValue={key}
             defaultSelectedCategoryValue=""
             open={true}
             type={"inline"}
@@ -31,12 +32,12 @@ export const LeftNav: React.FC = memo(() => {
             <NavDrawerHeader></NavDrawerHeader>
             <NavDrawerBody>
                 <Link to="/">
-                    <NavItem icon={<DataIcon />} value="/">
+                    <NavItem icon={<DataIcon />} value="">
                         Mock: RAG
                     </NavItem>
                 </Link>
                 <Link to="/chat">
-                    <NavItem icon={<ChatIcon />} value="/chat">
+                    <NavItem icon={<ChatIcon />} value="chat">
                         Chat
                     </NavItem>
                 </Link>

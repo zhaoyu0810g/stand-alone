@@ -21,7 +21,7 @@ const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
 };
 
 export const Chat: React.FC = () => {
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState('Prepare my day');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const messages = useSelector((state: StoreState) => state.messages.messages);

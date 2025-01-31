@@ -33,7 +33,9 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
     }, [messages]);
 
     if (!data) {
-        return null;
+        return <div className={styles.mainContainer}>
+            <span>Ask question to getting start, using mock data</span>
+        </div>
     }
 
     return (
@@ -43,50 +45,50 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
             </div>
             <div className={styles.section}>
                 <>
-                
-                <Text weight='bold'>
-                    Agenda
-                </Text>
-                <List>
-                    {data.agenda.map((item, index) => (
-                        <ListItem key={index} style={{ marginBottom: '10px' }}>
-                            <div>
-                            <Text><DisplayHighPriority isHighPriority={item.isHighPriority} /><strong>{item.startTime} - {item.endTime}</strong> {item.agendaSubject}</Text>
-                            <span className={styles.icon}>
-                                <Tooltip content="Schedule a meeting" relationship="label">
-                                    <Button size="small" icon={<CalendarMonthRegular />} />
-                                </Tooltip>
-                                <Tooltip content="Create a document" relationship="label">
-                                    <Button size="small" icon={<CalendarAddRegular />} />
-                                </Tooltip>
-                            </span>
-                            </div>
-                            <div style={{color: "grey"}}>{item.agendaDetails}</div>
-                            {/* <Text>Source: {item.source}</Text> */}
-                            <div>
-                                {item.myPreparation &&  <Checkbox style={{ color: 'blue' }} label={item.myPreparation} />}
-                            </div>
-                        </ListItem>
-                    ))}
-                </List>
+
+                    <Text weight='bold'>
+                        Agenda
+                    </Text>
+                    <List>
+                        {data.agenda.map((item, index) => (
+                            <ListItem key={index} style={{ marginBottom: '10px' }}>
+                                <div>
+                                    <Text><DisplayHighPriority isHighPriority={item.isHighPriority} /><strong>{item.startTime} - {item.endTime}</strong> {item.agendaSubject}</Text>
+                                    <span className={styles.icon}>
+                                        <Tooltip content="Schedule a meeting" relationship="label">
+                                            <Button size="small" icon={<CalendarMonthRegular />} />
+                                        </Tooltip>
+                                        <Tooltip content="Create a document" relationship="label">
+                                            <Button size="small" icon={<CalendarAddRegular />} />
+                                        </Tooltip>
+                                    </span>
+                                </div>
+                                <div style={{ color: "grey" }}>{item.agendaDetails}</div>
+                                {/* <Text>Source: {item.source}</Text> */}
+                                <div>
+                                    {item.myPreparation && <Checkbox style={{ color: 'blue' }} label={item.myPreparation} />}
+                                </div>
+                            </ListItem>
+                        ))}
+                    </List>
                 </>
                 <>
-                <Text weight='bold'>
-                    To-Do List
-                </Text>
-                <List>
-                    {data.todos.map((todo, index) => (
-                        <ListItem key={index} style={{ marginBottom: '10px' }}>
-                            <Checkbox label={todo.shortSummary} />
-                            {/* <Text >Source: {todo.source}</Text> */}
-                            <span className={styles.icon}>                                
-                                <Tooltip content="Schedule a meeting" relationship="label">
-                                    <Button size="small" icon={<CalendarMonthRegular />} />
-                                </Tooltip>
-                            </span>
-                        </ListItem>
-                    ))}
-                </List>
+                    <Text weight='bold'>
+                        To-Do List
+                    </Text>
+                    <List>
+                        {data.todos.map((todo, index) => (
+                            <ListItem key={index} style={{ marginBottom: '10px' }}>
+                                <Checkbox label={todo.shortSummary} />
+                                {/* <Text >Source: {todo.source}</Text> */}
+                                <span className={styles.icon}>
+                                    <Tooltip content="Schedule a meeting" relationship="label">
+                                        <Button size="small" icon={<CalendarMonthRegular />} />
+                                    </Tooltip>
+                                </span>
+                            </ListItem>
+                        ))}
+                    </List>
                 </>
             </div>
             {/* <div className={styles.section}>
