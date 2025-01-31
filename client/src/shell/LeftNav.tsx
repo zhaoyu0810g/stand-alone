@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import {
-    Board20Filled,
-    Board20Regular,
+    Chat20Filled,
+    Chat20Regular,
     BoxMultiple20Filled,
     BoxMultiple20Regular,
     bundleIcon,
@@ -14,8 +14,8 @@ import {
 } from "@fluentui/react-nav-preview";
 import { Link } from 'react-router-dom';
 
-const Dashboard = bundleIcon(Board20Filled, Board20Regular);
-const TrainingPrograms = bundleIcon(BoxMultiple20Filled, BoxMultiple20Regular);
+const ChatIcon = bundleIcon(Chat20Filled, Chat20Regular);
+const DataIcon = bundleIcon(BoxMultiple20Filled, BoxMultiple20Regular);
 
 // TODO: Change Icon
 
@@ -31,12 +31,12 @@ export const LeftNav: React.FC = memo(() => {
             <NavDrawerHeader></NavDrawerHeader>
             <NavDrawerBody>
                 <Link to="/">
-                    <NavItem icon={<TrainingPrograms />} value="/">
+                    <NavItem icon={<DataIcon />} value="/">
                         Mock: RAG
                     </NavItem>
                 </Link>
                 <Link to="/chat">
-                    <NavItem icon={<Dashboard />} value="/chat">
+                    <NavItem icon={<ChatIcon />} value="/chat">
                         Chat
                     </NavItem>
                 </Link>
