@@ -35,12 +35,14 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
                             <Text >{item.agendaDetails}</Text>
                             <Text >Preparation: {item.myPreparation || 'None'}</Text>
                             <Text >Source: {item.source}</Text>
-                            <Tooltip content="ReSchedule" relationship="label">
-                                <Button size="small" icon={<CalendarMonthRegular />} />
-                            </Tooltip>
-                            <Tooltip content="Create a document" relationship="label">
-                                <Button size="small" icon={<CalendarAddRegular />} />
-                            </Tooltip>
+                            <span className={styles.icon}>
+                                <Tooltip content="ReSchedule" relationship="label">
+                                    <Button size="small" icon={<CalendarMonthRegular />} />
+                                </Tooltip>
+                                <Tooltip content="Create a document" relationship="label">
+                                    <Button size="small" icon={<CalendarAddRegular />} />
+                                </Tooltip>
+                            </span>
                         </ListItem>
                     ))}
                 </List>
@@ -54,7 +56,11 @@ export const PrepareMyDay: React.FC = memo((): ReactNode => {
                         <ListItem key={index} style={{ marginBottom: '10px' }}>
                             <DisplayHighPriority isHighPriority={todo.isHighPriority} />
                             <Checkbox label={todo.shortSummary} /><Text >Source: {todo.source}</Text>
-                            <Button>Schedule a meeting</Button>
+                            <span className={styles.icon}>                                
+                                <Tooltip content="Schedule a meeting" relationship="label">
+                                    <Button size="small" icon={<CalendarMonthRegular />} />
+                                </Tooltip>
+                            </span>
                         </ListItem>
                     ))}
                 </List>
