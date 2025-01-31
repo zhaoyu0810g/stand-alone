@@ -6,37 +6,39 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
     const [jsonData, setJsonData] = useState<string>("...");
     const [isLoading, setIsLoading] = useState(false);
 
+    const executeAsync = useCallback(async (asyncFn: () => Promise<unknown>) => {
+        try {
+            setIsLoading(true);
+            const result = await asyncFn();
+            setJsonData(JSON.stringify(result, null, 4));
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
-        (async () => {
-            setIsLoading(true);
+        executeAsync(async () => {
             const result = await ragMockService.get();
-            setJsonData(JSON.stringify(result.data, null, 4));
-            setIsLoading(false);
-        })();
-    }, []);
+            return result.data;
+        });
+    }, [executeAsync]);
 
-    const handleSave = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            await ragMockService.update(jsonData);
-        } catch (error) {
-            console.error("Error saving data:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [jsonData]);
+    const handleSave = useCallback(() => {
+        executeAsync(async () => {
+            const result = await ragMockService.update(jsonData);
+            return result.data;
+        });
+    }, [jsonData, executeAsync]);
 
-    const handleRegenerate = useCallback(async () => {
-        try {
-            setIsLoading(true);
+    const handleRegenerate = useCallback(() => {
+        executeAsync(async () => {
             const result = await ragMockService.gen();
-            setJsonData(JSON.stringify(result.data, null, 4));
-        } catch (error) {
-            console.error("Error saving data:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+            return result.data;
+        });
+    }, [executeAsync]);
+
 
     const onChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setJsonData(event.target.value)
@@ -47,7 +49,7 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
             <h2>
                 Adjust RAG Retrieval Results for Testing
             </h2>
-            <p>Assuming that the retrieval process can collected below text from platforms such as Zoom Workspaces, Google Calendar, Google Docs etc... </p>
+            <p>Assuming that the retrieval process collected below text from platforms such as Zoom Workspaces, Google Calendar, Google Docs etc... </p>
             <p>You can modify this mock data and use it to pose questions on the chat page.</p>
             <div>
                 <Button appearance="primary" onClick={handleSave} disabled={isLoading}>Save to server</Button>
