@@ -4,6 +4,8 @@ import { Message } from '../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreState } from '../../redux/store';
 import { updateMessages } from '../../redux/messagesSlice';
+import styles from "./Chat.module.scss";
+import { Button } from '@fluentui/react-components';
 
 const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
     if (!message) return null;
@@ -51,22 +53,22 @@ export const Chat: React.FC = () => {
     };
 
     return (
-        <div>
-            <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
+        <div className={styles.chatContainer}>
+            <div className={styles.msgContainer}>
                 {messages.map((message, index) => (
                     <MessageDisplay message={message} key={index} />
                 ))}
                 {loading && <p>Loading...</p>}
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <input
                     type="text"
                     value={message}
                     onChange={handleMessageChange}
                     placeholder="Type your message here..."
-                    style={{ width: '100%', padding: '8px', marginTop: '10px' }}
+                    className={styles.input}
                 />
-                <button type="submit" style={{ padding: '8px', marginTop: '10px' }}>Send</button>
+                <Button type="submit" className={styles.btn} appearance='primary'>Send</Button>
             </form>
         </div>
     );
