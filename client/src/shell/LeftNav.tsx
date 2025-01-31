@@ -12,36 +12,37 @@ import {
     NavDrawerHeader,
     NavItem,
 } from "@fluentui/react-nav-preview";
+import { Link } from 'react-router-dom';
 
 const Dashboard = bundleIcon(Board20Filled, Board20Regular);
 const TrainingPrograms = bundleIcon(BoxMultiple20Filled, BoxMultiple20Regular);
 
 export const LeftNav: React.FC = memo(() => {
-    const linkDestination = "";
-    const handleSelectionChange = useCallback((_event: {}, item: { value: string }) => {
-        console.log("Selected value:", item);
-    }, []);
-
     return (
         <NavDrawer
-            defaultSelectedValue="1"
+            defaultSelectedValue={window.location.pathname}
             defaultSelectedCategoryValue=""
             open={true}
             type={"inline"}
             multiple={true}
-            onNavItemSelect={handleSelectionChange}
         >
             <NavDrawerHeader></NavDrawerHeader>
             <NavDrawerBody>
-                <NavItem href={linkDestination} icon={<Dashboard />} value="1">
-                    Home
-                </NavItem>
-                <NavItem href={linkDestination} icon={<TrainingPrograms />} value="2">
-                    Mock: RAG
-                </NavItem>
-                <NavItem href={linkDestination} icon={<TrainingPrograms />} value="3">
-                    Connector
-                </NavItem>
+                <Link to="/">
+                    <NavItem icon={<Dashboard />} value="/">
+                        Home
+                    </NavItem>
+                </Link>
+                <Link to="/dashboard">
+                    <NavItem icon={<TrainingPrograms />} value="/dashboard">
+                        Mock: RAG
+                    </NavItem>
+                </Link>
+                <Link to="/connector">
+                    <NavItem icon={<TrainingPrograms />} value="3">
+                        Connector
+                    </NavItem>
+                </Link>
             </NavDrawerBody>
         </NavDrawer>
     );
