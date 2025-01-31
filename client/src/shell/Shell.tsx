@@ -3,7 +3,7 @@ import { LeftNav } from './LeftNav';
 import { TopBar } from './TopBar';
 import { Route, Routes } from 'react-router-dom';
 import { ChatPage } from '../pages/chat/ChatPage';
-import { MockPage } from '../pages/mock/MockPage';
+import { MockDataPage } from '../pages/mock/MockDataPage';
 import { ConnectorPage } from '../pages/connector/ConnectorPage';
 
 import styles from "./Shell.module.scss";
@@ -16,7 +16,7 @@ export const Shell: React.FC = memo((): ReactNode => {
                 <LeftNav />
                 <div>
                     <Routes>
-                        <Route path="/" element={<MockPage />} />
+                        <Route path="/" element={<MockDataPage />} />
                         <Route path="/chat" element={<ChatPage />} />
                         <Route path="/connector" element={<ConnectorPage />} />
                     </Routes>
