@@ -1,6 +1,7 @@
 import { Button, Card } from '@fluentui/react-components';
 import React, { ReactNode, memo, useCallback, useEffect, useState } from 'react';
 import { ragMockService } from '../../service/ragMockService';
+import { MockConnector } from './MockConnector';
 
 export const MockDataPage: React.FC = memo((): ReactNode => {
     const [jsonData, setJsonData] = useState<string>("...");
@@ -45,26 +46,29 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
     }, []);
 
     return (
-        <Card style={{ width: "100%", height: "100%" }}>
-            <h2>
-                Adjust RAG Retrieval Results for Testing
-            </h2>
-            <p>Assuming that the retrieval process collected below text from platforms such as Zoom Workspaces, Google Calendar, Google Docs etc... </p>
-            <p>You can modify this mock data and use it to pose questions on the chat page.</p>
-            <div>
-                <Button appearance="primary" onClick={handleSave} disabled={isLoading}>Save to server</Button>
-                <Button onClick={handleRegenerate} disabled={isLoading}>Regenerate (By ChatGPT)</Button>
-            </div>
-            <textarea
-                style={{
-                    width: "100%",
-                    height: "100%",
-                }}
-                disabled={isLoading}
-                value={jsonData}
-                onChange={onChange}
-            />
-        </Card>
+        <>
+            <Card style={{ width: "100%", height: "100%" }}>
+                <h2>
+                    Adjust RAG Retrieval Results for Testing
+                </h2>
+                <p>Assuming that the retrieval process collected below text from platforms such as Zoom Workspaces, Google Calendar, Google Docs etc... </p>
+                <p>You can modify this mock data and use it to pose questions on the chat page.</p>
+                <div>
+                    <Button appearance="primary" onClick={handleSave} disabled={isLoading}>Save to server</Button>
+                    <Button onClick={handleRegenerate} disabled={isLoading}>Regenerate (By ChatGPT)</Button>
+                </div>
+                <textarea
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                    }}
+                    disabled={isLoading}
+                    value={jsonData}
+                    onChange={onChange}
+                />
+            </Card>
+            <MockConnector />
+        </>
     );
 });
 
