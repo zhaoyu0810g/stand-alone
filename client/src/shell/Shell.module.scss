@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.banner {
+    height: 50;
+    background-color: #0078d4;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 20;
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    flex-grow: 1
+}
+
+.middlePanel {
+    flex-grow: 1;
+    background: #ffffff;
+    padding: 10
+}
+
+.chat {
+    min-width: 150;
+    background: #f3f3f3;
+    overflow: auto;
+    padding: 10
+}

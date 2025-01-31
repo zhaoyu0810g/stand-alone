@@ -3,6 +3,7 @@ import { Resizable } from 'react-resizable';
 import "react-resizable/css/styles.css";
 import LeftNav from './LeftNav';
 import { Chat } from '../chat/Chat';
+import styles from "./Shell.module.scss";
 
 export const Shell = ({ children }: {
     children: ReactNode;
@@ -27,14 +28,14 @@ export const Shell = ({ children }: {
     );
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%" }}>
+        <div className={styles.container}>
             {/* Top Bar */}
-            <div style={{ height: 50, backgroundColor: "#0078d4", padding: "0 10px", display: "flex", alignItems: "center" }}>
-                <div style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>Logo</div>
+            <div className={styles.banner}>
+                <div className={styles.logo}>Logo</div>
             </div>
 
             {/* Main Content */}
-            <div style={{ display: "flex", flexGrow: 1 }}>
+            <div className={styles.content}>
                 {/* Left Resizable Panel */}
                 <Resizable
                     width={leftWidth}
@@ -45,7 +46,7 @@ export const Shell = ({ children }: {
                 </Resizable>
 
                 {/* Middle Panel */}
-                <div style={{ flexGrow: 1, background: "#ffffff", padding: 10 }}>
+                <div className={styles.middlePanel}>
                     {children}
                 </div>
 
@@ -55,7 +56,7 @@ export const Shell = ({ children }: {
                     height={0}
                     onResizeStop={onRightResizeStop}
                 >
-                    <div style={{ width: rightWidth, minWidth: 150, background: "#f3f3f3", overflow: "auto", padding: 10 }}>
+                    <div className={styles.chat} style={{width: rightWidth}}>
                         <Chat />
                     </div>
                 </Resizable>
