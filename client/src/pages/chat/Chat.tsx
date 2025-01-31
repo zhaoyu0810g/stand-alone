@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { chatService } from '../../service/chatService';
 import { Message } from '../../types';
 
@@ -23,7 +23,6 @@ export const Chat: React.FC = () => {
     const [message, setMessage] = useState('');
     const [chatHistory, setChatHistory] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
-
 
     const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(event.target.value);
@@ -51,16 +50,8 @@ export const Chat: React.FC = () => {
         }
     };
 
-    const testOnClick = useCallback(async () => {
-        const response = await chatService.post([{ role: 'user', content: 'prepare my day' }]);
-        console.log(response);
-    }, []);
-
     return (
         <div>
-            <button onClick={testOnClick}>
-                Test
-            </button>
             <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
                 {chatHistory.map((message, index) => (
                     <MessageDisplay message={message} key={index} />

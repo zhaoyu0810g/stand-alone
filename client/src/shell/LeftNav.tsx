@@ -17,6 +17,8 @@ import { Link } from 'react-router-dom';
 const Dashboard = bundleIcon(Board20Filled, Board20Regular);
 const TrainingPrograms = bundleIcon(BoxMultiple20Filled, BoxMultiple20Regular);
 
+// TODO: Change Icon
+
 export const LeftNav: React.FC = memo(() => {
     return (
         <NavDrawer
@@ -29,18 +31,13 @@ export const LeftNav: React.FC = memo(() => {
             <NavDrawerHeader></NavDrawerHeader>
             <NavDrawerBody>
                 <Link to="/">
-                    <NavItem icon={<Dashboard />} value="/">
-                        Home
-                    </NavItem>
-                </Link>
-                <Link to="/dashboard">
-                    <NavItem icon={<TrainingPrograms />} value="/dashboard">
+                    <NavItem icon={<TrainingPrograms />} value="/">
                         Mock: RAG
                     </NavItem>
                 </Link>
-                <Link to="/connector">
-                    <NavItem icon={<TrainingPrograms />} value="3">
-                        Connector
+                <Link to="/chat">
+                    <NavItem icon={<Dashboard />} value="/chat">
+                        Chat
                     </NavItem>
                 </Link>
             </NavDrawerBody>

@@ -1,5 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import { messagesSlice } from './messagesSlice'
+import { Message } from '../types';
+
+export type StoreState = {
+  messages: Message[];
+}
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -27,6 +33,6 @@ export const counterSlice = createSlice({
 export const { increment, decrement, incrementByAmount } = counterSlice.actions
 
 export const store = configureStore({
-  reducer: {counter: counterSlice.reducer},
+  reducer: {counter: counterSlice.reducer, messages: messagesSlice.reducer},
 })
 

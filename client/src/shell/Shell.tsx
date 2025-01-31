@@ -16,8 +16,8 @@ export const Shell: React.FC = memo((): ReactNode => {
                 <LeftNav />
                 <div>
                     <Routes>
-                        <Route path="/" element={<ChatPage />} />
-                        <Route path="/dashboard" element={<MockPage />} />
+                        <Route path="/" element={<MockPage />} />
+                        <Route path="/chat" element={<ChatPage />} />
                         <Route path="/connector" element={<ConnectorPage />} />
                     </Routes>
                 </div>

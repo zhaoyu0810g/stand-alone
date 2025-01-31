@@ -1,6 +1,7 @@
 import React, { ReactNode, memo } from 'react';
 import { Chat } from './Chat';
-// TODO
+
+// TODO: Create chat page
 import styles from "../../shell/Shell.module.scss";
 
 export const ChatPage: React.FC = memo((): ReactNode => {
