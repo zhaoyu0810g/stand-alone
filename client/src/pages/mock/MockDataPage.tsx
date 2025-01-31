@@ -9,6 +9,7 @@ import { clearMessages } from '../../redux/messagesSlice';
 export const MockDataPage: React.FC = memo((): ReactNode => {
     const [jsonData, setJsonData] = useState<string>("...");
     const [isLoading, setIsLoading] = useState(false);
+    const [hasChanges, setHasChanges] = useState(false);
     const dispatch = useDispatch();
 
     const executeAsync = useCallback(async (asyncFn: () => Promise<unknown>) => {
@@ -34,6 +35,7 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
         executeAsync(async () => {
             const result = await ragMockService.update(jsonData);
             dispatch(clearMessages());
+            setHasChanges(false);
             return result.data;
         });
     }, [executeAsync, jsonData, dispatch]);
@@ -42,13 +44,15 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
         executeAsync(async () => {
             const result = await ragMockService.gen();
             dispatch(clearMessages());
+            setHasChanges(false);
             return result.data;
         });
     }, [dispatch, executeAsync]);
 
 
     const onChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setJsonData(event.target.value)
+        setJsonData(event.target.value);
+        setHasChanges(true);
     }, []);
 
     return (
@@ -60,7 +64,7 @@ export const MockDataPage: React.FC = memo((): ReactNode => {
                 <p>Assuming that the retrieval process collected below text from platforms such as Zoom Workspaces, Google Calendar, Google Docs etc... </p>
                 <p>You can modify this mock data and use it to pose questions on the chat page.</p>
                 <div>
-                    <Button appearance="primary" onClick={handleSave} disabled={isLoading}>Save to server</Button>
+                    <Button appearance="primary" onClick={handleSave} disabled={isLoading || !hasChanges}>Save to server</Button>
                     <Button onClick={handleRegenerate} disabled={isLoading}>Regenerate (By ChatGPT)</Button>
                 </div>
                 <textarea

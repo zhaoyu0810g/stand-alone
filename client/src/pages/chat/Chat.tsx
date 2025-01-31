@@ -15,7 +15,7 @@ const MessageDisplay: React.FC<{ message: Message }> = ({ message }) => {
         content = JSON.parse(message.content).reply;
     }
 
-    return <div >
+    return <div>
         <p><strong>{message.role}</strong> {content}</p>
     </div>
 };
@@ -25,7 +25,7 @@ export const Chat: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const messages = useSelector((state: StoreState) => state.messages.messages);
-    
+
     const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(event.target.value);
     };
@@ -57,7 +57,7 @@ export const Chat: React.FC = () => {
                 {messages.map((message, index) => (
                     <MessageDisplay message={message} key={index} />
                 ))}
-                {loading && <p>Loading...</p>}
+                {loading && <p>...</p>}
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <input
@@ -66,8 +66,9 @@ export const Chat: React.FC = () => {
                     onChange={handleMessageChange}
                     placeholder="Type your message here..."
                     className={styles.input}
+                    disabled={loading}
                 />
-                <Button type="submit" className={styles.btn} appearance='primary'>Send</Button>
+                <Button type="submit" className={styles.btn} appearance='primary' disabled={loading}>Send</Button>
             </form>
         </div>
     );

@@ -1,2 +1,2 @@
 export const serverURL = "https://standalone-server.azurewebsites.net";
-export const localURL = "http://localhost:3000";
+export const _serverURL = "http://localhost:3000";
