@@ -2,8 +2,9 @@ import axios, { AxiosResponse } from 'axios';
 import { serverURL } from './const';
 
 export const ragMockService = {
-  async update(data: string): Promise<AxiosResponse<string>> {
-    return axios.post<string>(`${serverURL}/mock`, {data});
+  async update(data: string):
+    Promise<AxiosResponse<string>> {
+    return axios.post<string>(`${serverURL}/mock`, { data });
   },
 
   async get(): Promise<AxiosResponse<string>> {

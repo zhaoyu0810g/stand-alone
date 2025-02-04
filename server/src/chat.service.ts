@@ -34,28 +34,37 @@ const response = z.object({
   reply: z.string(),
 });
 
-const createSystemMessage = (
-  retrivalData: string,
-): ChatCompletionMessageParam => {
-  return {
+const appendSystemMessages = (
+  messages: ChatCompletionMessageParam[],
+  retrievalData: string,
+): void => {
+  const systemMessage: ChatCompletionMessageParam = {
     role: 'system',
     content:
-      'You are an expert at arrange agenda and structured data extraction.\r\n' +
-      'If user ask "prepare my day", return the structured data of the day, set `reply`, `summaryOftheDay`, `agenda` and `todos`.\r\n' +
-      'If user ask other questions instead of "prepare my day" or something similiar, only set `reply`, donnot set `summaryOftheDay`,  `agenda` or `todos`.\r\n' +
-      'The following are retravial data from a calenda, gmail, docs etc...:' +
-      retrivalData,
+      'You are an expert in agenda planning.\n' +
+      'When the user requests "prepare my day" or similar, generate a structured response containing:\n' +
+      '- `reply`: A brief response.\n' +
+      '- `summaryOfTheDay`: A concise overview.\n' +
+      '- `agenda`: A chronological breakdown of key events.\n' +
+      '- `todos`: A list of tasks for the day.\n' +
+      'Use the retrieved data to enhance accuracy.\n' +
+      'For any other questions, only populate `reply` and avoid setting `summaryOfTheDay`, `agenda`, or `todos`.\n' +
+      `Here is the retrieved data from various sources (calendar, email, docs, etc.): ${retrievalData}`,
   };
+
+  messages.unshift(systemMessage);
 };
 
 @Injectable()
 export class ChatService {
   async prepareMyDay(
-    retrivalData: string,
+    retrievalData: string,
     messages: ChatCompletionMessageParam[],
   ): Promise<ChatCompletionMessageParam[]> {
-    const systemMessage = createSystemMessage(retrivalData);
-    messages.unshift(systemMessage);
+    appendSystemMessages(messages, retrievalData);
+
+    console.log(messages);
+
     const completion = await openai.beta.chat.completions.parse({
       model: 'gpt-4o',
       messages,

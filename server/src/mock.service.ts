@@ -48,23 +48,23 @@ export class MockService {
         {
           role: 'system',
           content:
-            'You are an expert at generating mock data from email, messages, calendar of an AI engineer, your response should be the direct answer, including a lot of details and rich information',
+            'You are an expert at generating realistic mock data from emails, messages, and calendars. Your response must be highly detailed, contextually rich.',
         },
         {
           role: 'user',
           content:
-            'help to write an mock retrieval result, from email, messages, calendar of an AI engineer. The response should be raw text, split into 4 parts ' +
-            'first part is line of strings, have 4 mock meetings, should have starting, ending, AI engineer related meetings, mock the meeting description, need have some content about preparation from this AI engineer' +
-            'second part is line of strings, have 2 family calendars, the time should before/after working hour, have rich content and description' +
-            'third part is raw text. have 3 messages received from friends, e.g. Tom want to schedule lunch with him today for lunch at bellevue down town, another friend want to schedule activity with this AI engineer. ' +
-            'fourth part is line of strings, have 3 messages received from family member, e.g. wife asking to buy something from super market, Mom asking to check weather of Seattle. Have rich content',
+            'Generate a structured mock retrieval result for an AI engineer’s today schedule based on email, messages, and calendar data. The response should be divided into four parts:\n\n' +
+            '1. **Meetings (as an array of strings)**: Generate 4 mock meetings with start and end times. The meetings should be relevant to an AI engineer (e.g., standups, model review sessions, stakeholder syncs). Each meeting should include a brief description and mention any necessary preparation.\n\n' +
+            '2. **Family Calendar (as an array of strings)**: Generate 2 family-related calendar events scheduled outside of working hours. Each event should have a clear purpose (e.g., school drop-off, dinner reservations) with rich descriptions.\n\n' +
+            '3. **Messages from Friends (as raw text)**: Include 3 mock messages received from friends. These should be casual, such as someone inviting the AI engineer to lunch in Bellevue downtown or planning an evening activity.\n\n' +
+            '4. **Messages from Family Members (as an array of strings)**: Generate 3 messages from family members. These should include requests such as a spouse asking to buy groceries or a parent asking about Seattle’s weather, with detailed and natural phrasing.\n\n' +
+            'Assume all event are today, needn`t include data in the response',
         },
       ],
       response_format: zodResponseFormat(mockDataContract, 'mockData'),
     });
 
     const parsed = completion.choices[0].message.parsed;
-
     defaultMockData = JSON.stringify(parsed, null, 2);
     return defaultMockData;
   }
